@@ -24,15 +24,26 @@ def generate_yaml(num_nodes, mode="oob", with_rerank="True"):
         pods_list = common_pods + ["llm-dependency-deploy"]
 
     if num_nodes == 1:
-        replicas = [
-            {"name": "chatqna-backend-server-deploy", "replicas": 2},
-            {"name": "embedding-dependency-deploy", "replicas": 1},
-            {"name": "reranking-dependency-deploy", "replicas": 1} if with_rerank else None,
-            {"name": "llm-dependency-deploy", "replicas": 1 if with_rerank else 1},
-            {"name": "dataprep-deploy", "replicas": 1},
-            {"name": "vector-db", "replicas": 1},
-            {"name": "retriever-deploy", "replicas": 2},
-        ]
+        if mode == "oob":
+            replicas = [
+                {"name": "chatqna-backend-server-deploy", "replicas": 2},
+                {"name": "embedding-dependency-deploy", "replicas": 1},
+                {"name": "reranking-dependency-deploy", "replicas": 1} if with_rerank else None,
+                {"name": "llm-dependency-deploy", "replicas": 1 if with_rerank else 1},
+                {"name": "dataprep-deploy", "replicas": 1},
+                {"name": "vector-db", "replicas": 1},
+                {"name": "retriever-deploy", "replicas":2},
+            ]
+        else:
+            replicas = [
+                {"name": "chatqna-backend-server-deploy", "replicas": 2},
+                {"name": "embedding-dependency-deploy", "replicas": 5},
+                {"name": "reranking-dependency-deploy", "replicas": 1} if with_rerank else None,
+                {"name": "llm-dependency-deploy", "replicas": 1 if with_rerank else 1},
+                {"name": "dataprep-deploy", "replicas": 1},
+                {"name": "vector-db", "replicas": 1},
+                {"name": "retriever-deploy", "replicas":1},
+            ]
     else:
         replicas = [
             {"name": "chatqna-backend-server-deploy", "replicas": 1 * num_nodes},
@@ -47,11 +58,11 @@ def generate_yaml(num_nodes, mode="oob", with_rerank="True"):
     resources = [
         {
             "name": "chatqna-backend-server-deploy",
-            "resources": {"limits": {"cpu": "16", "memory": "8000Mi"}, "requests": {"cpu": "16", "memory": "8000Mi"}},
+            "resources": {"limits": {"cpu": "8", "memory": "8000Mi"}, "requests": {"cpu": "8", "memory": "8000Mi"}},
         },
         {
             "name": "embedding-dependency-deploy",
-            "resources": {"limits": {"cpu": "80", "memory": "20000Mi"}, "requests": {"cpu": "80", "memory": "20000Mi"}},
+            "resources": {"limits": {"cpu": "24", "memory": "20000Mi"}, "requests": {"cpu": "24", "memory": "20000Mi"}},
         },
         (
             {"name": "reranking-dependency-deploy", "resources": {"limits": {"habana.ai/gaudi": 1}}}
