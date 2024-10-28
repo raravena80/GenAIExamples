@@ -28,7 +28,7 @@ def generate_yaml(num_nodes, mode="oob", with_rerank="True"):
             {"name": "chatqna-backend-server-deploy", "replicas": 2},
             {"name": "embedding-dependency-deploy", "replicas": 1},
             {"name": "reranking-dependency-deploy", "replicas": 1} if with_rerank else None,
-            {"name": "llm-dependency-deploy", "replicas": 7 if with_rerank else 8},
+            {"name": "llm-dependency-deploy", "replicas": 1 if with_rerank else 1},
             {"name": "dataprep-deploy", "replicas": 1},
             {"name": "vector-db", "replicas": 1},
             {"name": "retriever-deploy", "replicas": 2},
