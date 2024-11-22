@@ -89,8 +89,8 @@ def generate_helm_values(with_rerank, num_nodes, hf_token, model_dir, node_selec
             {
                 "name": "tei",
                 "resources": {
-                    "limits": {"cpu": "80", "memory": "20000Mi"},
-                    "requests": {"cpu": "80", "memory": "20000Mi"},
+                    "limits": {"cpu": "144", "memory": "20000Mi"},
+                    "requests": {"cpu": "144", "memory": "20000Mi"},
                 },
             },
             {"name": "teirerank", "resources": {"limits": {"habana.ai/gaudi": 1}}} if with_rerank else None,
